@@ -13,19 +13,4 @@ public class SpringKafkaApplication {
 		SpringApplication.run(SpringKafkaApplication.class, args);
 	}
 
-	//Command line runner will start the produce the message , once application starts
-	 
-	@Bean
-	CommandLineRunner commandLineRunner(KafkaTemplate<String, String> kafkaTemplate){
-		//System.out.println("Producing Message for Topic atquil");
-		return args -> {
-			kafkaTemplate.send("atquil", "data");
-			}; 
-	}
-	
-
-	
-	/// Open the terminal where kafka is installed and run this command
-	/// bin/kafka-topics.sh --create --topic atquil-events --bootstrap-server localhost:9092
-
 }
