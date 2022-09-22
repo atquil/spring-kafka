@@ -71,3 +71,23 @@ maven
     </dependency>
 
 ```
+### Other imp commands
+
+1. Read the kafka topics from terminal 
+
+```
+$ bin/kafka-console-consumer.sh --topic <Your Topic Name> --from-beginning --bootstrap-server localhost:9092
+```
+
+2. Post API
+
+```
+http://localhost:8080/send
+
+Body : 
+{
+    "name":"Something",
+    "id":"BCS2"
+}
+
+```
