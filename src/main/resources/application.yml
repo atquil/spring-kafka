@@ -20,6 +20,12 @@ spring:
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       # As we are consuming the same json object it will be Json Deserializer
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring:
+          json:
+            trusted:
+              packages: com.atquil.springkafka.*
+      
       
 
 

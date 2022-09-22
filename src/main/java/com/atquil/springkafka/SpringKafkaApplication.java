@@ -1,5 +1,7 @@
 package com.atquil.springkafka;
 
+import org.apache.kafka.clients.producer.ProducerRecord;
+import org.json.JSONObject;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -15,19 +17,14 @@ public class SpringKafkaApplication {
 		SpringApplication.run(SpringKafkaApplication.class, args);
 	}
 
-	/*
-	 * Dependency to create json object : https://mvnrepository.com/artifact/org.json/json/20090211 
-	 * - gradle
-	 * // https://mvnrepository.com/artifact/org.json/json
-		implementation 'org.json:json:20090211'	
-	 */
+	
 
 	@Bean
-	CommandLineRunner commandLineRunner(KafkaTemplate<String,String> kafkaTemplate){
-		//System.out.println("Producing Message for Topic atquil");
-		
+	CommandLineRunner commandLineRunner(KafkaTemplate<String,PopulationList> kafkaTemplate){
+
+		PopulationList populationList = new PopulationList("CommandLineRunner", "1");
 		return args -> {
-			kafkaTemplate.send("atquil", "Sending this through atquil topic", "afasdf");
+			kafkaTemplate.send("atquil_json",populationList);
 			}; 
 	}
 }

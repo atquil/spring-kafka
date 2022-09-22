@@ -3,13 +3,16 @@ package com.atquil.springkafka.service;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
+import com.atquil.springkafka.entity.PopulationList;
+
 @Service
 public class KafkaConsumerService {
     
     // Group Id , Instance of same application then Common Listener
-    @KafkaListener(topics = "atquil_json", groupId = "groupId")
-    void KafkaListener(String data){
-        System.out.println("Received Json Data : "+data);
+    @KafkaListener(topics = "atquil_json", groupId = "alpha")
+    void KafkaListener(PopulationList data){
+        System.out.println("Received Json Data PopulationList[Name]: "+data.getName());
+        System.out.println("Received Json Data PopulationList[id] : "+data.getId());
     }
 
 }
