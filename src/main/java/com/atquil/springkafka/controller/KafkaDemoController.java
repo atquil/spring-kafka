@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.atquil.springkafka.entity.PopulationList;
+import com.atquil.springkafka.service.KafkaProducerService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -15,12 +16,12 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class KafkaDemoController {
     
-    private final KafkaTemplate<String , String> kafkaTemplate;
+    private final KafkaProducerService kafkaProducersService;
 
-    @PostMapping("/send")
-    public void kafkaController(@RequestBody PopulationList populationList){
-        System.out.print(populationList);
-        kafkaTemplate.send("atquil", populationList.toString());
+
+    @PostMapping("/publish")
+    public void publish(@RequestBody PopulationList populationList){
+        kafkaProducersService.sendMessage(populationList.toString());
     }
 
 }
