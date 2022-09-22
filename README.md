@@ -71,3 +71,10 @@ maven
     </dependency>
 
 ```
+### Other imp commands
+
+1. Read the kafka topics
+
+```
+$ bin/kafka-console-consumer.sh --topic <Your Topic Name> --from-beginning --bootstrap-server localhost:9092
+```
