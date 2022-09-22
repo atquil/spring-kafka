@@ -23,5 +23,5 @@ public class KafkaDemoController {
     public void publish(@RequestBody PopulationList populationList){
         kafkaProducersService.sendJsonMessage(populationList);
     }
-
+    
 }

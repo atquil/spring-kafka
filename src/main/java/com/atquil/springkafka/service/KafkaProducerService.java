@@ -14,18 +14,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class KafkaProducerService {
 
-   private final KafkaTemplate<String, String> kafkaTemplate;
-
-
-    public void sendMessage(String message){
-        kafkaTemplate.send("atquil_json",message);
-    }
+    private final KafkaTemplate<String,PopulationList> kafkaTemplate;
     
-
-    // Produce Json
-
-    private final KafkaTemplate<String,PopulationList> kafkaTemplate2;
-
     public void sendJsonMessage(PopulationList populationList){
 
         Message<PopulationList> message = MessageBuilder
@@ -33,6 +23,6 @@ public class KafkaProducerService {
         .setHeader(KafkaHeaders.TOPIC, "atquil_json")
         .build();
 
-        kafkaTemplate2.send(message);
+        kafkaTemplate.send(message);
     }
 }
