@@ -12,11 +12,13 @@ public class SpringKafkaApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(SpringKafkaApplication.class, args);
 	}
+
+
 	@Bean
 	CommandLineRunner commandLineRunner(KafkaTemplate<String, String> kafkaTemplate){
-		//System.out.println("Producing Message for Topic atquil");
+		
 		return args -> {
-			kafkaTemplate.send("atquil", "data");
+			kafkaTemplate.send("atquil", "Sending Data from CommandLineRunner");
 			}; 
 	}
 }

@@ -1,14 +1,14 @@
-package com.atquil.springkafka.component;
+package com.atquil.springkafka.service;
 
 import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
-public class KafkaListeners {
+@Service
+public class KafkaConsumerService {
     
     // Group Id , Instance of same application then Common Listener
     @KafkaListener(topics = "atquil", groupId = "groupId")
-    void listener(String data){
+    void kafkaListener(String data){
         System.out.println("Received Data : "+data);
     }
 
