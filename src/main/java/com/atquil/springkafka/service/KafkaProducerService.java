@@ -18,7 +18,7 @@ public class KafkaProducerService {
 
 
     public void sendMessage(String message){
-        kafkaTemplate.send("atquil",message);
+        kafkaTemplate.send("atquil_json",message);
     }
     
 
@@ -27,9 +27,10 @@ public class KafkaProducerService {
     private final KafkaTemplate<String,PopulationList> kafkaTemplate2;
 
     public void sendJsonMessage(PopulationList populationList){
+
         Message<PopulationList> message = MessageBuilder
         .withPayload(populationList)
-        .setHeader(KafkaHeaders.TOPIC, "atquil")
+        .setHeader(KafkaHeaders.TOPIC, "atquil_json")
         .build();
 
         kafkaTemplate2.send(message);
