@@ -21,7 +21,7 @@ public class KafkaDemoController {
 
     @PostMapping("/publish")
     public void publish(@RequestBody PopulationList populationList){
-        kafkaProducersService.sendMessage(populationList.toString());
+        kafkaProducersService.sendJsonMessage(populationList);
     }
 
 }
