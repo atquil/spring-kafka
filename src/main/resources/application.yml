@@ -1,11 +1,11 @@
 spring:
   kafka:
-    bootstrap-servers: localhost:9092
+    #bootstrap-servers: localhost:9092
 
 
     #Producer Configuration
     producer:
-      bootstrap-servers: localhost:9092
+      #bootstrap-servers: localhost:9092
       #As key is string we are using StringSerializer
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       # As value will be an Json Object we will be using Json Serialiser
@@ -13,7 +13,7 @@ spring:
   
     #Consumer Configuration
     consumer:
-      bootstrap-servers: localhost:9092
+      #bootstrap-servers: localhost:9092
       group-id: alpha
       auto-offset-reset: earliest
       # As while consuming, the key will be string using StringDeserializer

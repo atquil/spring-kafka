@@ -25,8 +25,23 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.kafka:spring-kafka-test'
-	// https://mvnrepository.com/artifact/org.json/json
-	implementation 'org.json:json:20220320'
+
+	// Webflux: For Streaming service 
+	/*
+	<dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-webflux</artifactId>
+    </dependency>
+
+	*/
+	implementation 'org.springframework.boot:spring-boot-starter-webflux'
+
+	//For reading the stream with ease 
+	// https://mvnrepository.com/artifact/io.netty/netty-all
+//implementation 'io.netty:netty-all:4.1.24.Final'
+implementation 'io.netty:netty-all'
+implementation(group: "io.netty", name: "netty-resolver-dns-native-macos", version: "4.1.72.Final", classifier: "osx-aarch_64")
+
 }
 
 tasks.named('test') {

@@ -97,3 +97,6 @@ abc: abc
 ada: adfadf
 asdf
 ---
+
+Reactive and non-blocking generally do not make applications run faster. The expected benefit of reactive and non-blocking is the ability to scale the application with a small, fixed number of threads and lesser memory requirements. It makes applications more resilient under load because they scale in a more predictable manner.
+

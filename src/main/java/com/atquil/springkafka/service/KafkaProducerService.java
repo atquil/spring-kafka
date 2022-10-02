@@ -1,12 +1,10 @@
 package com.atquil.springkafka.service;
 
 import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.kafka.support.KafkaHeaders;
-import org.springframework.messaging.Message;
-import org.springframework.messaging.support.MessageBuilder;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import com.atquil.springkafka.entity.PopulationList;
+import com.atquil.springkafka.entity.Employee;
 
 import lombok.RequiredArgsConstructor;
 
@@ -14,15 +12,18 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class KafkaProducerService {
 
-    private final KafkaTemplate<String,PopulationList> kafkaTemplate;
+    private final KafkaTemplate<String,Employee> kafkaTemplate;
+    int i = 1;
+    @Scheduled(fixedRate = 5000)
+    public void streamKafka() { // No arguments for the method. 
+        Employee populationList = new Employee("Streaming Service Mimic ", "Id: "+i);
+        i++;
+        sendMessage( "atquil_json", populationList);
     
-    public void sendJsonMessage(PopulationList populationList){
+  }
+  public void sendMessage(String topicName, Employee populationList) {
+    kafkaTemplate.send(topicName, populationList);
+  }
 
-        Message<PopulationList> message = MessageBuilder
-        .withPayload(populationList)
-        .setHeader(KafkaHeaders.TOPIC, "atquil_json")
-        .build();
 
-        kafkaTemplate.send(message);
-    }
 }
