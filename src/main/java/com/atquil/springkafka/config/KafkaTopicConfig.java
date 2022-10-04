@@ -10,7 +10,7 @@ public class KafkaTopicConfig {
 
     @Bean
     public NewTopic createJsonTopic(){
-        return TopicBuilder.name("atquil_json").build();
+        return TopicBuilder.name("streaming_data").build();
     }
     
 }

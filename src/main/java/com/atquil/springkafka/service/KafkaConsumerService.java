@@ -7,12 +7,11 @@ import com.atquil.springkafka.entity.Employee;
 
 @Service
 public class KafkaConsumerService {
-    
-    // Group Id , Instance of same application then Common Listener
-    @KafkaListener(topics = "atquil_json", groupId = "alpha")
+
+    @KafkaListener(topics = "streaming_data", groupId = "alpha")
     void KafkaListener(Employee data){
-        System.out.println("Received Json Data PopulationList[Name]: "+data.getName());
-        System.out.println("Received Json Data PopulationList[id] : "+data.getId());
+        System.out.println("**** Inside Consumer ****** ");
+        System.out.println("Received Data :"+data);
     }
 
 }

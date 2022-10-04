@@ -4,7 +4,7 @@
   
   1. [Spring Boot with Apache Kafka](https://docs.spring.io/spring-kafka/docs/current/reference/html/#preface)
   2. [Apache Kafka Official ](https://kafka.apache.org/documentation/)
-
+   
 <br>
 
 ## History
@@ -72,31 +72,3 @@ maven
 
 ```
 ### Other imp commands
-
-1. Read the kafka topics from terminal 
-
-```
-$ bin/kafka-console-consumer.sh --topic <Your Topic Name> --from-beginning --bootstrap-server localhost:9092
-```
-
-2. Post API
-
-```
-http://localhost:8080/send
-
-Body : 
-{
-    "name":"Something",
-    "id":"BCS2"
-}
-
-```
-
----
-abc: abc
-ada: adfadf
-asdf
----
-
-Reactive and non-blocking generally do not make applications run faster. The expected benefit of reactive and non-blocking is the ability to scale the application with a small, fixed number of threads and lesser memory requirements. It makes applications more resilient under load because they scale in a more predictable manner.
-

@@ -4,6 +4,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
 @Controller
@@ -19,20 +20,20 @@ public class StreamApiUsingStreamingResponseBody {
 
     //We are using ResponseEntity here which helps in better control of HTTP headers and status
 
-    @GetMapping(value="/data")
-  public ResponseEntity<StreamingResponseBody> streamData() {
-     StreamingResponseBody responseBody = response -> {
-        for (int i = 1; i <= 1000; i++) {
-           try {
-              Thread.sleep(10);
-              response.write(("Data stream line - " + i + "\n").getBytes());
-           } catch (InterruptedException e) {
-              e.printStackTrace();
-           }
-        }
-     };
-     return ResponseEntity.ok()
+    @GetMapping(value="/stream-data/stream-response-body")
+    public ResponseEntity<StreamingResponseBody> streamData() {
+        StreamingResponseBody responseBody = response -> {
+            for (int i = 1; i <= 1000; i++) {
+               try {
+                  Thread.sleep(10);
+                  response.write(("Data stream line - " + i + "\n").getBytes());
+               } catch (InterruptedException e) {
+                  e.printStackTrace();
+               }
+            }
+        };
+        return ResponseEntity.ok()
            .contentType(MediaType.TEXT_PLAIN)
            .body(responseBody);
-  }
+    }
 }

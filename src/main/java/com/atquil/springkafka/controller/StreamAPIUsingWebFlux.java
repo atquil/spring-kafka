@@ -2,8 +2,13 @@ package com.atquil.springkafka.controller;
 
 import java.time.Duration;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.http.MediaType;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.support.SendResult;
+import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -14,84 +19,48 @@ import lombok.RequiredArgsConstructor;
 import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
 
+// Spring WebFlux: Spring WebFlux supports fully non-blocking reactive streams
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("kafka")
 public class StreamAPIUsingWebFlux {
-/*
-    Spring WebFlux: Spring WebFlux supports fully non blocking reactive streams
 
- */
+    private final KafkaProducerService kafkaProducerService;
 
- private final KafkaProducerService kafkaProducerService;
-// ************** Creating stream API working ********************* 
+    // *********************  API to create Stream of Data ***********************************
 
-@GetMapping(value = "/stream/data" , produces = MediaType.APPLICATION_NDJSON_VALUE)
-public Flux<Object> streamDataFlux() {
-    
-  return Flux.interval(Duration.ofSeconds(1)).map(i -> "Data stream line - " + i );
-}
-// Reading the stream data
-    
+    // MediaType.APPLICATION_STREAM_JSON_VALUE : If you want to see stream in browser
+    @GetMapping(value = "/stream/create-employee-data" , produces = MediaType.APPLICATION_NDJSON_VALUE)
+    public Flux<Employee> streamJsonObjects() {
+        String randomName = RandomStringUtils.randomAlphabetic(5).toUpperCase();
+      return Flux.interval(Duration.ofSeconds(2)).map(i -> new Employee(randomName, i.toString()));
+    }
 
-@GetMapping(value = "/json/data" , produces = MediaType.APPLICATION_NDJSON_VALUE)
-public Flux<Employee> streamJsonObjects() {
-  return Flux.interval(Duration.ofSeconds(1)).map(i -> new Employee("Name" + i, i.toString()));
-}
 
-// ************** Reading stream API working ********************* 
-
-@GetMapping(value  = "/stream/read", produces = MediaType.APPLICATION_NDJSON_VALUE)
-    public void readStreamDataFromEndpoint(){
+    // *********************  API to Read Stream of Data and publish to kafka ***********************************
+    @GetMapping(value  = "/stream/read-and-publish", produces = MediaType.APPLICATION_NDJSON_VALUE)
+    public void streamDataToKafka(){
 
         
-     Flux<Employee> x =    WebClient.create()
-            .get().uri("http://localhost:8080/json/data")
-           // .accept(MediaType.APPLICATION_JSON)
-
+        Flux<Employee> employeeStream =    WebClient.create()
+            .get().uri("http://localhost:8080/stream/create-employee-data")
             .retrieve()
-            
-          .bodyToFlux(Employee.class);
-            
-           // .doOnSubscribe((t) ->{System.out.println(t);} )
-         //   .log();
-            //.delaySubscription(Duration.ofSeconds(5))
-          //  .doOnSubscribe(population->{System.out.println(population);})
-// .repeat();
-          //  kafkaProducerService.sendMessage("Afd","Asdf")
-        x.subscribe(t->{System.out.println(t);});
+            .bodyToFlux(Employee.class);
+            //.subscribe(System.out::println); //.subscribe(t->{System.out.println(t);});
+
+        employeeStream.subscribe(employee-> {kafkaProducerService.publish("streaming_data", employee);});
+
     }
 
-    @GetMapping(value  = "/stream/read1", produces = MediaType.APPLICATION_STREAM_JSON_VALUE)
-    public void adfs(){
+    @GetMapping(value  = "/stream/read-and-publish/with-delay", produces = MediaType.APPLICATION_NDJSON_VALUE)
+    public void streamDataWithDelay(){
 
-        
-        Disposable x =    WebClient.create()
-        .get().uri("http://localhost:8080/json/data")
-       // .accept(MediaType.APPLICATION_JSON)
+            WebClient.create()
+                .get().uri("http://localhost:8080/kafka/stream/create-employee-data")
+                .retrieve()
+                .bodyToFlux(Employee.class)
+                .delaySubscription(Duration.ofSeconds(5)) // Start subscribing after 5 sec
+                .subscribe(employee -> kafkaProducerService.publish("streaming_data", employee));
 
-        .retrieve()
-        
-      .bodyToFlux(Employee.class)
-      .delaySubscription(Duration.ofSeconds(2))
-      .subscribe(t->{System.out.println(t);});
-        
-       // .doOnSubscribe((t) ->{System.out.println(t);} )
-     //   .log();
-        //.delaySubscription(Duration.ofSeconds(5))
-      //  .doOnSubscribe(population->{System.out.println(population);})
-// .repeat();
-      //  kafkaProducerService.sendMessage("Afd","Asdf")
-  //  x.subscribe(t->{System.out.println(t);});
-       
     }
-    
-/// But if you have configured the database, then you can mention the repository’s method directly which will return a list of objects.
-// Flux automatically manages the database cursors, 
-//so for a large dataset, it streams all the database objects without overloading the server resources.
-/* 
-@GetMapping(value = "/json/flux", produces = MediaType.APPLICATION_STREAM_JSON_VALUE)
-public Flux<PopulationList> streamJsonObjectsFromDb() {
-  return studentRepository.findAll();
-}
-*/
 }
